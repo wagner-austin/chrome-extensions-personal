@@ -2,8 +2,7 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({ copiedTexts: [] });
 });
 
-async function logCopyText() {
-  const copiedText = await navigator.clipboard.readText();
+function logCopyText(copiedText) {
   chrome.storage.local.get("copiedTexts", (result) => {
     const texts = result.copiedTexts || [];
     if (!texts.includes(copiedText)) {
@@ -14,7 +13,9 @@ async function logCopyText() {
   });
 }
 
-// Listen to copy events to log copied text
-chrome.commands.onCommand.addListener((command) => {
-  if (command === "log_copy_text") logCopyText();
+// Receive messages from content script and log copied text
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.copiedText) {
+    logCopyText(message.copiedText);
+  }
 });

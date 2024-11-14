@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   chrome.storage.local.get("copiedTexts", (result) => {
     const texts = result.copiedTexts || [];
 
-    texts.forEach((text, index) => {
+    texts.forEach((text) => {
       const itemDiv = document.createElement("div");
       itemDiv.classList.add("item");
       
